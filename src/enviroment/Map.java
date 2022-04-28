@@ -7,6 +7,7 @@ public class Map {
     public MapType mapMatrix[][];
 
     private final int[][] maze;
+    private final int[][] mazeTest;
     private final int SIZE;
     private final int x;
 	private final int y;
@@ -19,19 +20,15 @@ public class Map {
         this.x = size;
 		this.y = size;
 		maze = new int[this.x][this.y];
-		generateMaze(0, 0);
-        copyMap();
-        System.out.println("done");
-    }
+        mazeTest = new int[SIZE][SIZE];
 
-    public void printMap() {
-        //print the current state of the matrix mapMatrix in the console 
+		// generateMaze(0, 0);
+        // copyMap();
+
 
     }
-    
-    public void generateRandomObstacles() {
-        
-    }
+
+    // implement maze generator algorithm with the maze matrix
     private void generateMaze(int cx, int cy) {
         // 5,5
         // 6,5
@@ -118,6 +115,8 @@ public class Map {
             System.out.println("");
         }
     }
+
+
 
 
 }
