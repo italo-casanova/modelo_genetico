@@ -32,6 +32,9 @@ public class Map {
 		//
        mazeTable = new Maze(len, wid);
        mapMatrixTest = mazeTable.getMapMatrix();
+       this.x = len;
+       this.y = wid;
+
     }
 
     // implement maze generator algorithm with the maze matrix
@@ -122,6 +125,14 @@ public class Map {
         }
     }
 
+    public void displayTest() {
+        for(int i = 0; i<this.x; i++){
+            for(int j = 0; j<this.y; j++){
+                System.out.print(mapMatrixTest[i][j].toString()+" ");
+            }
+            System.out.println("");
+        }
+    }
 
 
 

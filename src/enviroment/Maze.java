@@ -5,22 +5,18 @@ public class Maze {
     private MapType mapMatrix[][]; //encapsula este porfa un getter
     // genero getters a setters? solo getMapMatrix
     private Random ran = new Random();
-    private final boolean[][] map;
     private final int lenght;
 	private final int width;
     // private Vector<Point> cells;
     
     //try to emulate the behaviour of a set with a LinkedList
-    private  LinkedList<Point> cells = new LinkedList<>();
-    List<Integer> found = new ArrayList<Integer>();
+    private  Set<Point> cells = new HashSet<>();
     // una celula sobrevive si tiene entre 1-5 vecinos
     // una célula aparece en una celda si esta celda tiene exactamente 3 vecinos 
 
     public Maze(int len, int wid) {
         lenght = len;
         width = wid;
-        map = new boolean[len][wid];
-        found.removeif()
         this.mapMatrix = MapType.newMapLW(len, wid);
         generateMaze();
     
@@ -46,7 +42,7 @@ public class Maze {
 
     private void generateMaze(){
         startRandom();
-        for(int i = 0; i < 100; i++){
+        for(int i = 0; i < 10; i++){
             tick();
         }
     }
@@ -56,7 +52,7 @@ public class Maze {
     private void  startRandom(){
 
         //count will be 50 just temporarily
-        int count = 50;
+        int count = 20;
 
         while (count > 0) {
             int istart = (this.width - 10) / 2, jstart = (this.lenght - 10) / 2;
@@ -64,7 +60,7 @@ public class Maze {
             for(int i = 0; i < 10; i++){
                 for(int j = 0; j < 10; j++) {
                     // generate random obstacles in the map
-                    if(ran.nextInt(2) == 1 && !map[i + istart][j + jstart]) {
+                    if(ran.nextInt(2) == 1 && mapMatrix[i + istart][j + jstart]!=MapType.OBSTACLE  ) {
                         mapMatrix[i + istart][j + jstart] = MapType.OBSTACLE;
                         cells.add( new Point(i+istart, j+jstart));
                         count--;
@@ -85,7 +81,7 @@ public class Maze {
         //tas eliminando mientras iteras
         // me bota error
         
-        Set<Point> conjuntoAuxiliar = new HashSet(); //que
+        Collection<Point> conjuntoAuxiliar = new LinkedList<>(); //que
 
         for (Point cell: cells) {
             if (this.mapMatrix[cell.i][cell.j] == MapType.EMPTY) {
@@ -104,7 +100,7 @@ public class Maze {
         // ah xd, eso iba a hacer en remove xd 
 
         
-        Set<Point> conjuntoAuxiliar = new HashSet(); //que
+        Collection<Point> conjuntoAuxiliar = new LinkedList<>(); //que
         for(Point cell : cells){
             for (Point otherCell: getNeighbours(cell)){
                 conjuntoAuxiliar.add(otherCell);
@@ -115,6 +111,7 @@ public class Maze {
 
     private void tick(){
         //run rules
+        System.out.println("Un tick");
         addNeighbours();
         for(Point cell : cells){
             if(pointBool(cell)){
@@ -140,13 +137,14 @@ public class Maze {
         }
 
         //update state
+        System.out.println(cells.size());
         for(Point cell : cells) mapMatrix[cell.i][cell.j] = cell.nexState == true ? MapType.OBSTACLE : MapType.EMPTY;
         removeEmpties();
 
     }
 
     private boolean pointBool(Point point){
-        return map[point.i][point.j];
+        return mapMatrix[point.i][point.j] == MapType.OBSTACLE ? true: false;
     }
     private boolean offLimits(Point point){
         return offLimits(point.i, point.j);
