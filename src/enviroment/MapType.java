@@ -19,6 +19,14 @@ public enum MapType {
         }
         return mapMatrix;
     }
+    public static MapType[][] newMapLW(int len, int wid) {
+        MapType mapMatrix[][] = new MapType[len][wid];
+
+        for(int i = 0; i<mapMatrix.length; i++){
+            Arrays.fill(mapMatrix[i], EMPTY);
+        }
+        return mapMatrix;
+    }
     @Override 
     public String toString() {
         switch (this) {

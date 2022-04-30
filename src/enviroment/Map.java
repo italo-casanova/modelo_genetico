@@ -4,28 +4,34 @@ import java.util.*;
 
 public class Map {
 
-    public MapType mapMatrix[][];
+	private MapType mapMatrixTest[][];
+	private Maze mazeTable;
+    //cambia mapMatrix a mapMatrixTest
+    
 
-    private final int[][] maze;
-    private final int[][] mazeTest;
-    private final int SIZE;
-    private final int x;
-	private final int y;
-
+    private int[][] maze;
+    private int SIZE;
+    private int x;
+    private int y;
 
     public Map(int size){
         SIZE = size*2 + 1;
-        mapMatrix = MapType.newMap(SIZE);
+        mapMatrixTest = MapType.newMap(SIZE);
         //all of the livingObjects start at (0,0)
         this.x = size;
 		this.y = size;
 		maze = new int[this.x][this.y];
-        mazeTest = new int[SIZE][SIZE];
 
 		// generateMaze(0, 0);
         // copyMap();
 
 
+    }
+    
+    public Map(int len, int wid){
+		//
+       mazeTable = new Maze(len, wid);
+       mapMatrixTest = mazeTable.getMapMatrix();
     }
 
     // implement maze generator algorithm with the maze matrix
@@ -77,40 +83,40 @@ public class Map {
 			// draw the north edge
 			for (int j = 0; j < x; j++) {
 				if( (maze[j][i] & 1) == 0  ) {
-                    mapMatrix[2*i][2*j] = MapType.OBSTACLE;
-                    mapMatrix[2*i][2*j+1] = MapType.OBSTACLE;
+                    mapMatrixTest[2*i][2*j] = MapType.OBSTACLE;
+                    mapMatrixTest[2*i][2*j+1] = MapType.OBSTACLE;
                 } else{ 
-                    mapMatrix[2*i][2*j] = MapType.OBSTACLE;
+                    mapMatrixTest[2*i][2*j] = MapType.OBSTACLE;
                     // mapMatrix[2*i][2*j+1] = MapType.OBSTACLE;
                 }
 			}
 			// draw the west edge
 			for (int j = 0; j < x; j++) {
                 if( (maze[j][i] & 8) == 0) {
-                    mapMatrix[2*i+1][2*j] = MapType.OBSTACLE;
+                    mapMatrixTest[2*i+1][2*j] = MapType.OBSTACLE;
                 } else{ 
                     // mapMatrix[i+1][j+1] = MapType.OBSTACLE;
                 }
 			}
             // filling right col
-            mapMatrix[2*i][2*(x-1)+2] = MapType.OBSTACLE;
+            mapMatrixTest[2*i][2*(x-1)+2] = MapType.OBSTACLE;
             
             // filling left col 
-            mapMatrix[2*i+1][2*(x-1)+2] = MapType.OBSTACLE;
+            mapMatrixTest[2*i+1][2*(x-1)+2] = MapType.OBSTACLE;
             
             // filling the last row
             //fails if it is not a square
-            mapMatrix[2*(x-1)+2][2*i] = MapType.OBSTACLE;
-            mapMatrix[2*(x-1)+2][2*i+1] = MapType.OBSTACLE;
+            mapMatrixTest[2*(x-1)+2][2*i] = MapType.OBSTACLE;
+            mapMatrixTest[2*(x-1)+2][2*i+1] = MapType.OBSTACLE;
         }
-            mapMatrix[2*(x-1)+2][2*(x-1)+2] = MapType.OBSTACLE;
+            mapMatrixTest[2*(x-1)+2][2*(x-1)+2] = MapType.OBSTACLE;
 
 	}
     
     public void display() {
         for(int i = 0; i<SIZE; i++){
             for(int j = 0; j<SIZE; j++){
-                System.out.print(mapMatrix[i][j].toString()+" ");
+                System.out.print(mapMatrixTest[i][j].toString()+" ");
             }
             System.out.println("");
         }
