@@ -35,9 +35,9 @@ public enum MapType {
             case FOOD:
                 return "o";
             case OBSTACLE:
-                return "1";
+                return " ";
             case EMPTY:
-                return "0";
+                return "O";
             default:
                 return " ";
         }

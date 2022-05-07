@@ -52,10 +52,14 @@ public class Maze {
     private void generateMaze(){
         startRandom();
         for(int i = 0; i < 5; i++){
-            displayTest();
-            System.out.println(i);
             tick();
         }
+        displayTest();
+        reshapeMap();
+        System.out.println("After reshape:");
+        displayTest();
+        System.out.println("------");
+
     }
 
 
@@ -64,6 +68,7 @@ public class Maze {
 
         //count will be 50 just temporarily
         int count = this.lenght*this.width/2;
+        // llegue xd 
 
         while (count > 0) {
             // int istart = (this.lenght) / 2, jstart = (this.width) / 2;
@@ -145,11 +150,44 @@ public class Maze {
             
         }
 
+        
+        
+        
         //update state
         // System.out.println(cells.size());
         for(Point cell : cells) mapMatrix[cell.i][cell.j] = cell.nexState == true ? MapType.OBSTACLE : MapType.EMPTY;
         removeEmpties();
+        
+    }
+    
+    
+    // TODO: definir un metodo que construya un camino a traves del mapa 
+    // dado un vecor inicial del angulo de inclinacion menor de 45, va a botat
+    // un numero aleatoria como diferencia del angulo.
+    // cuando se encuentre cerca de la salida, sera una recta
+    // ||r|| = log2(mapa.len . mapa{0}.len)
 
+    private void reshapeMap(){
+
+
+        boolean nexStates[][] = new boolean[this.lenght][this.width];
+        //this method should be called ONLY AFTER HAVING CALLED removeEmpties
+        for (Point cell : this.cells) {
+            int count = 0;
+            for(Point neigh: getNeighbours(cell)){
+                if (pointBool(neigh)) count++;
+            }
+            if(count>3) nexStates[cell.i][cell.j] = true; // this cell shoud die
+        }
+
+        for(int i = 0; i<this.lenght; i++)
+            for(int j = 0; j<this.width; j++){
+                if(nexStates[i][j]) mapMatrix[i][j] = MapType.EMPTY;
+            }
+    }
+    
+    private void generateExitPath(){
+        
     }
 
     private boolean pointBool(Point point){
