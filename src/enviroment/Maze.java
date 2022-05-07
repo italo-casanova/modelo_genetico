@@ -24,10 +24,6 @@ public class Maze {
 
     public MapType[][] getMapMatrix() {
         return this.mapMatrix;
-        // por que es void?
-        // pq el autocompletado es mas inutil que acosta en algoritimia
-        //JA
-        //voy a probarlo, con mucha fe
     }
     
 
@@ -55,8 +51,9 @@ public class Maze {
 
     private void generateMaze(){
         startRandom();
-        for(int i = 0; i < 200; i++){
-            // displayTest();
+        for(int i = 0; i < 5; i++){
+            displayTest();
+            System.out.println(i);
             tick();
         }
     }
@@ -66,17 +63,17 @@ public class Maze {
     private void  startRandom(){
 
         //count will be 50 just temporarily
-        int count = 20;
+        int count = this.lenght*this.width/2;
 
         while (count > 0) {
-            int istart = (this.width - 10) / 2, jstart = (this.lenght - 10) / 2;
+            // int istart = (this.lenght) / 2, jstart = (this.width) / 2;
             loop:
-            for(int i = 0; i < 10; i++){
-                for(int j = 0; j < 10; j++) {
+            for(int i = 0; i < this.lenght; i++){
+                for(int j = 0; j < this.width; j++) {
                     // generate random obstacles in the map
-                    if(ran.nextInt(2) == 1 && mapMatrix[i + istart][j + jstart]!=MapType.OBSTACLE  ) {
-                        mapMatrix[i + istart][j + jstart] = MapType.OBSTACLE;
-                        cells.add( new Point(i+istart, j+jstart));
+                    if(ran.nextInt(2) == 1 && mapMatrix[i ][j ]!=MapType.OBSTACLE  ) {
+                        mapMatrix[i ][j ] = MapType.OBSTACLE;
+                        cells.add( new Point(i, j));
                         count--;
                     }
                     if (count == 0) {
@@ -92,9 +89,6 @@ public class Maze {
 
     private void removeEmpties(){
 
-        //tas eliminando mientras iteras
-        // me bota error
-        System.out.println("Antes de: "+cells.size() );
         Collection<Point> conjuntoAuxiliar = new LinkedList<>(); //que
 
         for (Point cell: cells) {
@@ -104,7 +98,7 @@ public class Maze {
             }
         }
         cells.removeAll(conjuntoAuxiliar);
-        System.out.println("Despues de: "+cells.size() );
+        // System.out.println("Despues de: "+cells.size() );
 
     }
 
@@ -121,18 +115,18 @@ public class Maze {
 
     private void tick(){
         //run rules
-        System.out.println("Un tick");
+        // System.out.println("Un tick");
         addNeighbours();
         for(Point cell : cells){
             if(pointBool(cell)){
                 // check if point survives
                 int count = 0;
-                int times = 0;
+                // int times = 0;
                 for(Point neighbour : getNeighbours(cell)) {
                     if(pointBool(neighbour)) count++;
-                    times++;
+                    // times++;
                 }
-                System.out.print(count+", "+times+"- ");
+                // System.out.print(count+", "+times+"- ");
                 if( 1<= count && count <= 5){
                     cell.nexState = true;
                 } else cell.nexState = false;
@@ -152,7 +146,7 @@ public class Maze {
         }
 
         //update state
-        System.out.println(cells.size());
+        // System.out.println(cells.size());
         for(Point cell : cells) mapMatrix[cell.i][cell.j] = cell.nexState == true ? MapType.OBSTACLE : MapType.EMPTY;
         removeEmpties();
 
