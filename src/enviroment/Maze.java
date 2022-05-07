@@ -38,11 +38,25 @@ public class Maze {
             this.i = i;
             this.j = j;
         }
+
+        @Override public boolean equals(Object obj) {
+            if(obj == this) return true;
+            if (obj == null || obj.getClass() != this.getClass()) { return false; }
+
+            Point p = (Point) obj;
+            return p.i == this.i && p.j == this.j;
+        }
+
+        @Override public int hashCode() {
+            return Objects.hash(this.i, this.j);
+        }
     }
+    
 
     private void generateMaze(){
         startRandom();
-        for(int i = 0; i < 10; i++){
+        for(int i = 0; i < 200; i++){
+            // displayTest();
             tick();
         }
     }
@@ -80,7 +94,7 @@ public class Maze {
 
         //tas eliminando mientras iteras
         // me bota error
-        
+        System.out.println("Antes de: "+cells.size() );
         Collection<Point> conjuntoAuxiliar = new LinkedList<>(); //que
 
         for (Point cell: cells) {
@@ -89,16 +103,12 @@ public class Maze {
                 // y at a ya
             }
         }
-        cells.addAll(conjuntoAuxiliar);
+        cells.removeAll(conjuntoAuxiliar);
+        System.out.println("Despues de: "+cells.size() );
+
     }
 
     private void addNeighbours(){
-        // 
-        // ya sé que cosa está mal. Ahorita lo arreglo
-        // que era?
-        //estoy añadiendo elementos mientras itero
-        // ah xd, eso iba a hacer en remove xd 
-
         
         Collection<Point> conjuntoAuxiliar = new LinkedList<>(); //que
         for(Point cell : cells){
@@ -117,7 +127,12 @@ public class Maze {
             if(pointBool(cell)){
                 // check if point survives
                 int count = 0;
-                for(Point neighbour : getNeighbours(cell)) if(pointBool(neighbour)) count++;
+                int times = 0;
+                for(Point neighbour : getNeighbours(cell)) {
+                    if(pointBool(neighbour)) count++;
+                    times++;
+                }
+                System.out.print(count+", "+times+"- ");
                 if( 1<= count && count <= 5){
                     cell.nexState = true;
                 } else cell.nexState = false;
@@ -156,18 +171,28 @@ public class Maze {
         return false;
     }
 
-    private Set<Point> getNeighbours(Point point){
-        Set<Point> neighbours;
-        neighbours = new HashSet<Point>();
+    private Collection<Point> getNeighbours(Point point){
+        Collection<Point> neighbours;
+        neighbours = new LinkedList<Point>();
         for (int index = -1; index < 2; index ++) {
             for (int j = -1; j < 2; j++) {
-                if (!offLimits(point.i + index, point.j + j) && (index != 0 && j != 0)) {
+                if (!offLimits(point.i + index, point.j + j) && (index != 0 || j != 0)) {
 
                     neighbours.add(new Point(point.i + index, point.j + j));
                 }
             }
         }
+
         return neighbours;
+    }
+
+    public void displayTest() {
+        for(int i = 0; i<lenght; i++){
+            for(int j = 0; j<width; j++){
+                System.out.print(mapMatrix[i][j].toString()+" ");
+            }
+            System.out.println("");
+        }
     }
 }
 
