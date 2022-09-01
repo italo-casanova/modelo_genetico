@@ -27,7 +27,7 @@ public enum MapType {
         }
         return mapMatrix;
     }
-    @Override 
+    @Override   
     public String toString() {
         switch (this) {
             case LIVING_OBJECT:
